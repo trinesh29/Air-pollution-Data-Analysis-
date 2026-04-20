@@ -1,5 +1,8 @@
-## Machine Learning + Statistics
+# Problem 5:
+# To analyze trends and perform machine learning and statistical tests.
+
 import pandas as pd
+import matplotlib.pyplot as plt
 import numpy as np
 from scipy import stats
 from sklearn.model_selection import train_test_split
@@ -8,13 +11,25 @@ from sklearn.metrics import r2_score
 
 df = pd.read_csv("dataset.csv")
 
+df['pollutant_avg'] = pd.to_numeric(df['pollutant_avg'], errors='coerce')
 df['pollutant_min'] = pd.to_numeric(df['pollutant_min'], errors='coerce')
 df['pollutant_max'] = pd.to_numeric(df['pollutant_max'], errors='coerce')
-df['pollutant_avg'] = pd.to_numeric(df['pollutant_avg'], errors='coerce')
 
 df = df.dropna()
 
-# ML
+# -------------------------------
+# Trend (Ordered Line Plot)
+# -------------------------------
+df_sorted = df.sort_values('pollutant_avg').reset_index(drop=True)
+df_sorted['index'] = range(len(df_sorted))
+
+plt.plot(df_sorted['index'], df_sorted['pollutant_avg'])
+plt.title("Pollution Trend")
+plt.show()
+
+# -------------------------------
+# Machine Learning
+# -------------------------------
 X = df[['pollutant_min','pollutant_max']]
 y = df['pollutant_avg']
 
@@ -27,7 +42,9 @@ predictions = model.predict(X_test)
 
 print("R2 Score:", r2_score(y_test, predictions))
 
-# Stats
+# -------------------------------
+# Statistical Tests
+# -------------------------------
 data = df['pollutant_avg']
 
 z_score = (np.mean(data) - 50) / (np.std(data)/np.sqrt(len(data)))
@@ -38,4 +55,4 @@ s_stat, s_p = stats.shapiro(sample)
 
 print("Z-score:", z_score)
 print("T-test:", t_stat, p_val)
-print("Shapiro:", s_stat, s_p)
+print("Shapiro:", s_stat, s_p))
