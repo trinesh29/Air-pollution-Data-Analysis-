@@ -1,17 +1,61 @@
-# Data Cleaning + Preprocessing
+# Problem 1:
+# To detect and remove outliers in pollutant_avg using the IQR method
+# and visualize before and after cleaning using boxplots.
+
 import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
 
-file_path = "dataset.csv"
+# Load dataset
+df = pd.read_csv("dataset.csv")
 
-df = pd.read_csv(file_path)
+data = df.copy()
 
-df.columns = df.columns.str.strip().str.lower()
+# -------------------------------
+# Basic Info
+# -------------------------------
+print(data.head())
+print(data.info())
+print(data.describe())
 
-df['pollutant_avg'] = pd.to_numeric(df['pollutant_avg'], errors='coerce')
-df['pollutant_min'] = pd.to_numeric(df['pollutant_min'], errors='coerce')
-df['pollutant_max'] = pd.to_numeric(df['pollutant_max'], errors='coerce')
+print("Missing Values:\n", data.isnull().sum())
 
-df = df.dropna()
+# -------------------------------
+# Select Column
+# -------------------------------
+col = 'pollutant_avg'
 
-print("Cleaned Data:\n")
-print(df.head())
+# Convert to numeric
+data[col] = pd.to_numeric(data[col], errors='coerce')
+data = data.dropna(subset=[col])
+
+# -------------------------------
+# IQR Method
+# -------------------------------
+Q1 = data[col].quantile(0.25)
+Q3 = data[col].quantile(0.75)
+IQR = Q3 - Q1
+
+lower = Q1 - 1.5 * IQR
+upper = Q3 + 1.5 * IQR
+
+# Remove outliers
+data_clean = data[(data[col] >= lower) & (data[col] <= upper)]
+
+# -------------------------------
+# Visualization
+# -------------------------------
+plt.figure(figsize=(12,5))
+
+plt.subplot(1,2,1)
+sns.boxplot(y=data[col])
+plt.title("Before Outlier Removal")
+
+plt.subplot(1,2,2)
+sns.boxplot(y=data_clean[col])
+plt.title("After Outlier Removal")
+
+plt.suptitle("Outlier Detection using IQR")
+
+plt.tight_layout()
+plt.show()
