@@ -9,7 +9,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import r2_score
 
-df = pd.read_csv("dataset.csv")
+df = pd.read_csv("air pollution.csv")
 
 df['pollutant_avg'] = pd.to_numeric(df['pollutant_avg'], errors='coerce')
 df['pollutant_min'] = pd.to_numeric(df['pollutant_min'], errors='coerce')
