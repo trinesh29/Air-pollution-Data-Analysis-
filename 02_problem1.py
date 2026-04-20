@@ -5,7 +5,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
-df = pd.read_csv("air pollution.csv")
+df = pd.read_csv("air_pollution.csv")
 
 data = df[['pollutant_avg']]
 
