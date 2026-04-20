@@ -4,7 +4,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
-df = pd.read_csv("dataset.csv")
+df = pd.read_csv("air pollution.csv")
 
 df['pollutant_avg'] = pd.to_numeric(df['pollutant_avg'], errors='coerce')
 df = df.dropna()
