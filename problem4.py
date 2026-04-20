@@ -1,20 +1,34 @@
-## Comparative Analysis
+# Problem 4:
+# To analyze relationship between pollutant_min and pollutant_max
+# and visualize distribution.
+
 import pandas as pd
 import matplotlib.pyplot as plt
 
 df = pd.read_csv("dataset.csv")
 
-df['pollutant_avg'] = pd.to_numeric(df['pollutant_avg'], errors='coerce')
+df['pollutant_min'] = pd.to_numeric(df['pollutant_min'], errors='coerce')
+df['pollutant_max'] = pd.to_numeric(df['pollutant_max'], errors='coerce')
+
 df = df.dropna()
 
-city_avg = df.groupby('city')['pollutant_avg'].mean().head(10)
+# -------------------------------
+# Scatter Plot
+# -------------------------------
+plt.figure(figsize=(8,5))
 
-# Bar Chart
-city_avg.plot(kind='bar')
-plt.title("Top Cities Pollution")
+plt.scatter(df['pollutant_min'], df['pollutant_max'], alpha=0.5)
+
+plt.title("Min vs Max Pollution")
+plt.xlabel("Min Pollution")
+plt.ylabel("Max Pollution")
+
+plt.grid()
 plt.show()
 
-# Pie Chart
-plt.pie(city_avg, labels=city_avg.index, autopct='%1.1f%%')
-plt.title("City Pollution Share")
+# -------------------------------
+# Histogram
+# -------------------------------
+plt.hist(df['pollutant_avg'], bins=30)
+plt.title("Pollution Distribution")
 plt.show()
