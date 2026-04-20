@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 # Load dataset
-df = pd.read_csv("dataset.csv")
+df = pd.read_csv("air pollution.csv")
 
 data = df.copy()
 
